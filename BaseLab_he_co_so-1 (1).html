@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BaseLab — Công cụ Hệ Cơ Số</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#687386;--line:#e5e9f1;--primary:#4f46e5;--primary2:#6366f1;--soft:#eef2ff;--danger:#dc2626;--shadow:0 12px 35px rgba(31,41,55,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+.container{max-width:1120px;margin:auto;padding:28px 18px 50px}.hero{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:22px}
+.brand{display:flex;align-items:center;gap:13px}.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;box-shadow:0 8px 20px #4f46e533}
+h1{font-size:25px;margin:0}.subtitle{margin:4px 0 0;color:var(--muted);font-size:14px}
+.tabs{display:flex;gap:7px;background:#e9edf5;padding:6px;border-radius:14px;margin-bottom:20px;overflow:auto}.tab{border:0;background:transparent;padding:11px 15px;border-radius:10px;color:#596477;font-weight:700;cursor:pointer;white-space:nowrap}.tab.active{background:#fff;color:var(--primary);box-shadow:0 3px 12px #11182712}
+.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:21px;box-shadow:var(--shadow)}
+.card h2{font-size:18px;margin:0 0 6px}.desc{color:var(--muted);font-size:13px;margin:0 0 18px}.field{margin-bottom:15px}.label{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;margin-bottom:7px}
+input,select{width:100%;padding:13px 14px;border:1px solid #d9deea;border-radius:11px;background:#fff;color:var(--text);font-size:15px;outline:none;transition:.15s}input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px #4f46e51a}
+button.primary{border:0;border-radius:11px;padding:12px 17px;background:var(--primary);color:#fff;font-weight:750;cursor:pointer}button.secondary{border:1px solid var(--line);background:#fff;border-radius:11px;padding:12px 17px;font-weight:700;cursor:pointer}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.result{margin-top:16px;padding:16px;border-radius:13px;background:var(--soft);border:1px solid #dfe3ff}.result .big{font-size:24px;font-weight:800;word-break:break-all}.result small{display:block;color:var(--muted);margin-bottom:5px}
+.switch{display:flex;align-items:center;gap:9px;background:#f8f9fc;border:1px solid var(--line);padding:8px;border-radius:11px}.switch button{border:0;background:transparent;padding:8px 12px;border-radius:8px;font-weight:700;color:var(--muted);cursor:pointer}.switch button.on{background:#fff;color:var(--primary);box-shadow:0 2px 8px #11182710}
+.math-row{display:grid;grid-template-columns:1fr 105px 1fr;gap:10px;align-items:end}.op{height:45px;border-radius:11px;border:1px solid var(--line);background:#f8f9fc;font-size:20px;font-weight:800;text-align:center}
+.steps{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}.steps div{font-family:ui-monospace,SFMono-Regular,monospace;background:#fafbfe;padding:8px 10px;border-radius:8px;margin:5px 0;font-size:13px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar input{max-width:310px}.count{color:var(--muted);font-size:13px;align-self:center}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:600px;background:#fff}th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}th{background:#f8f9fc;color:#4b5563;position:sticky;top:0}tr:hover td{background:#fafbff}.code{font-family:ui-monospace,SFMono-Regular,monospace;font-weight:700}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:11px;font-weight:700}
+.error{color:var(--danger);font-size:13px;margin-top:8px}.footer{text-align:center;color:#8a93a3;font-size:12px;margin-top:24px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{align-items:flex-start}.math-row{grid-template-columns:1fr}.op{width:100%}.container{padding-top:18px}h1{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="hero">
+    <div class="brand"><div class="logo">01</div><div><h1>BaseLab</h1><p class="subtitle">Công cụ học tập & tính toán hệ cơ số</p></div></div>
+  </header>
+
+  <nav class="tabs" aria-label="Các công cụ">
+    <button class="tab active" data-tab="convert">01 · Chuyển đổi</button>
+    <button class="tab" data-tab="calc">02 · Máy tính nhị phân</button>
+    <button class="tab" data-tab="ascii">03 · Bảng mã ASCII</button>
+  </nav>
+
+  <section id="convert" class="panel active">
+    <div class="grid">
+      <div class="card">
+        <h2>Chuyển đổi hệ cơ số</h2>
+        <p class="desc">Nhập một số và chọn chiều chuyển đổi giữa nhị phân và thập phân.</p>
+        <div class="switch" style="margin-bottom:16px">
+          <button id="dirBD" class="on">Nhị phân → Thập phân</button>
+          <button id="dirDB">Thập phân → Nhị phân</button>
+        </div>
+        <div class="field"><div class="label"><span id="inputLabel">Số nhị phân</span><span class="badge" id="baseBadge">BASE 2</span></div><input id="convertInput" placeholder="Ví dụ: 101101"></div>
+        <div class="actions"><button class="primary" id="convertBtn">Chuyển đổi</button><button class="secondary" id="clearConvert">Xóa</button></div>
+        <div id="convertError" class="error"></div>
+        <div id="convertResult" class="result" hidden><small>Kết quả</small><div class="big" id="convertOutput"></div></div>
+      </div>
+
+      <div class="card">
+        <h2>Hiểu nhanh</h2>
+        <p class="desc">Cách quy đổi cơ bản.</p>
+        <div class="steps">
+          <strong>Nhị phân → thập phân</strong>
+          <div>101101₂ = 1×2⁵ + 0×2⁴ + 1×2³ + 1×2² + 0×2¹ + 1×2⁰</div>
+          <div>= 32 + 8 + 4 + 1 = 45₁₀</div>
+          <br>
+          <strong>Thập phân → nhị phân</strong>
+          <div>45 ÷ 2 → lấy các phần dư từ dưới lên → 101101₂</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calc" class="panel">
+    <div class="card">
+      <h2>Máy tính nhị phân</h2>
+      <p class="desc">Thực hiện phép cộng hoặc nhân trực tiếp trên các số hệ nhị phân.</p>
+      <div class="math-row">
+        <div class="field"><div class="label">Số A</div><input id="a" placeholder="10101"></div>
+        <select id="operator" aria-label="Phép toán"><option value="+">＋ Cộng</option><option value="*">× Nhân</option></select>
+        <div class="field"><div class="label">Số B</div><input id="b" placeholder="110"></div>
+      </div>
+      <div class="actions"><button class="primary" id="calcBtn">Tính kết quả</button><button class="secondary" id="clearCalc">Xóa</button></div>
+      <div id="calcError" class="error"></div>
+      <div id="calcResult" class="result" hidden><small>Kết quả nhị phân</small><div class="big" id="calcOutput"></div><div class="steps" id="calcSteps"></div></div>
+    </div>
+  </section>
+
+  <section id="ascii" class="panel">
+    <div class="card">
+      <h2>Bảng mã ASCII</h2>
+      <p class="desc">Tra cứu đầy đủ 256 giá trị byte. Có thể tìm theo mã, ký tự hoặc tên.</p>
+      <div class="toolbar"><input id="asciiSearch" placeholder="Tìm: 65, A, newline, euro..."><select id="asciiRange"><option value="all">Tất cả 0–255</option><option value="std">ASCII chuẩn 0–127</option><option value="ext">ASCII mở rộng 128–255</option></select><span class="count" id="asciiCount"></span></div>
+      <div class="table-wrap"><table><thead><tr><th>Dec</th><th>Hex</th><th>Binary</th><th>Octal</th><th>Ký tự</th><th>Tên / mô tả</th></tr></thead><tbody id="asciiBody"></tbody></table></div>
+    </div>
+  </section>
+
+  <div class="footer">Lưu Đình Thắng • 10A8 • V2T<br>- TIN HỌC 10</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));btn.classList.add('active');$(btn.dataset.tab).classList.add('active')}));
+
+let direction='BD';
+function setDir(d){
+ direction=d;$('dirBD').classList.toggle('on',d==='BD');$('dirDB').classList.toggle('on',d==='DB');
+ $('inputLabel').textContent=d==='BD'?'Số nhị phân':'Số thập phân';$('baseBadge').textContent=d==='BD'?'BASE 2':'BASE 10';$('convertInput').value='';$('convertResult').hidden=true;$('convertError').textContent='';
+}
+$('dirBD').onclick=()=>setDir('BD');$('dirDB').onclick=()=>setDir('DB');
+
+$('convertBtn').onclick=()=>{
+ const v=$('convertInput').value.trim();$('convertError').textContent='';
+ try{
+   if(!v)throw Error('Vui lòng nhập một số.');
+   let n;
+   if(direction==='BD'){if(!/^[01]+$/.test(v))throw Error('Số nhị phân chỉ được chứa 0 và 1.');n=BigInt('0b'+v);$('convertOutput').textContent=n.toString(10)+'₁₀';}
+   else{if(!/^\d+$/.test(v))throw Error('Số thập phân chỉ được chứa các chữ số 0–9.');n=BigInt(v);$('convertOutput').textContent=n.toString(2)+'₂';}
+   $('convertResult').hidden=false;
+ }catch(e){$('convertError').textContent=e.message}
+};
+$('clearConvert').onclick=()=>setDir(direction);
+
+function validBin(x){return /^[01]+$/.test(x)}
+$('calcBtn').onclick=()=>{
+ const a=$('a').value.trim(),b=$('b').value.trim(),op=$('operator').value;$('calcError').textContent='';
+ try{
+  if(!validBin(a)||!validBin(b))throw Error('Hai số phải là số nhị phân, chỉ gồm 0 và 1.');
+  const A=BigInt('0b'+a),B=BigInt('0b'+b),R=op==='+'?A+B:A*B;
+  $('calcOutput').textContent=R.toString(2)+'₂';
+  $('calcSteps').innerHTML=`<div>${a}₂ ${op==='+'?'+':'×'} ${b}₂ = ${R.toString(10)}₁₀ = ${R.toString(2)}₂</div>`;
+  $('calcResult').hidden=false;
+ }catch(e){$('calcError').textContent=e.message}
+};
+$('clearCalc').onclick=()=>{$('a').value='';$('b').value='';$('calcResult').hidden=true;$('calcError').textContent=''};
+
+const controls=['NUL','SOH','STX','ETX','EOT','ENQ','ACK','BEL','BS','TAB','LF','VT','FF','CR','SO','SI','DLE','DC1','DC2','DC3','DC4','NAK','SYN','ETB','CAN','EM','SUB','ESC','FS','GS','RS','US'];
+function charInfo(i){
+ if(i<32)return {c:'␀',name:controls[i]};
+ if(i===32)return {c:'␠',name:'SPACE'};
+ if(i===127)return {c:'⌂',name:'DEL'};
+ if(i<128)return {c:String.fromCharCode(i),name:'Printable character'};
+ return {c:String.fromCharCode(i),name:'Extended character'};
+}
+function renderASCII(){
+ const q=$('asciiSearch').value.trim().toLowerCase(),range=$('asciiRange').value;
+ let rows=[];
+ for(let i=0;i<256;i++){
+  if(range==='std'&&i>127)continue;if(range==='ext'&&i<128)continue;
+  const x=charInfo(i), hay=`${i} ${i.toString(16)} ${i.toString(2)} ${i.toString(8)} ${x.c} ${x.name}`.toLowerCase();
+  if(q && !hay.includes(q))continue;
+  rows.push(`<tr><td class="code">${i}</td><td class="code">${i.toString(16).toUpperCase().padStart(2,'0')}</td><td class="code">${i.toString(2).padStart(8,'0')}</td><td class="code">${i.toString(8).padStart(3,'0')}</td><td class="code">${escapeHtml(x.c)}</td><td>${x.name}</td></tr>`);
+ }
+ $('asciiBody').innerHTML=rows.join('');$('asciiCount').textContent=`${rows.length} kết quả`;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+$('asciiSearch').oninput=renderASCII;$('asciiRange').onchange=renderASCII;renderASCII();
+</script>
+</body>
+</html>
